@@ -15,7 +15,7 @@
  * GPIORead				- Read the GPIO
  * GPIOWrite			- Write to the GPIO pin
  *
- * To use as a regular user - none root - a set of UDEV rules must be
+ * To use as a regular user - none root - a set of UDEV rules must
  * be setup, and the user who is running the program accessing the GPIO
  * must be added to the group GPIO as a user.
  *
@@ -29,7 +29,7 @@
  #include <unistd.h>
  #include <stdbool.h>
 
- #include "gpiolib.h"				// gpio library main header fiel and function setup
+ #include "gpiolib.h"				// gpio library main header file and function setup
  #include "gpiopin.h"				// PIN library of available pins
 
  int GPIOExport(int pin) {

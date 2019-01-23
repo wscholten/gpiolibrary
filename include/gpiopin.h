@@ -12,6 +12,11 @@ extern "C"
 
 // FREE GPIO pins - i.e. pins which are not also designated to
 // SPI., I2C, TTY, PWM etc
+//
+// We use for convienance the RPI Chip GPIO number/naming
+// which then is mapped to the Linux Kernel numbering
+// see: https://wiki.up-community.org/Pinout_UP2#GPIO
+
 #define BCM4 433        // header pin# 7
 #define BCM27 432       // header pin# 13
 #define BCM22 431       // header pin# 15
