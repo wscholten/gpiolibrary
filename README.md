@@ -2,7 +2,9 @@
 
 This is an experimental GPIO library for the UPboard. It relies on the 4.15 kernel which uses a different GPIO pin numbering.  The GPIO numbering matches that of the UP^2 board.
 
-The header file gpiopin.h has the namiong setup for the GPIO pins matching the RPI naming BCM# and mapped to the kernel linux numbering.  For example BCM4 is linux 433 and is physical pin 7 on the header.
+The header file gpiopin.h has the naming setup for the GPIO pins matching the RPI naming BCM# and mapped to the kernel linux numbering.  For example BCM4 is linux 433 and is physical pin 7 on the header.
+
+The header configgpio.h is used to setup which pins the program will use, and what direction the pin is set to. This is done through two simple arrays, where the index points to the PIN in one array and the direction in the other.
 
 The gpilib.c contains the following core functions:
 
