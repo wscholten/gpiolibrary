@@ -20,3 +20,30 @@ In order for this library to work, a set of UDEV rules are required, allowing GP
 
 To compile the sample use:  gcc -o bin/gpiodemo -I include gpiodemo.c gpiolib.c
 then run the program using: ./bin/gpiodemo
+
+UDEV rules
+==========
+
+The following UDEV rules should be present in this directory:
+/lib/udev/rules.d/
+
+The UDEV rule file should be called: 99-gpio.rules
+
+The rules in this file should be:
+
+# rules to permit access to hat peripheral from userspace
+SUBSYSTEM=="gpio", KERNEL=="gpio*",     GROUP:="gpio"     MODE:="0660"
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", PROGRAM="/bin/sh -c 'chown root:gpio /sys/class/gpio/export /sys/classgpio/unexport ; chmod 220 /sys/class/gpio/export /sys/class/gpio/unexport'"
+SUBSYSTEM=="gpio", KERNEL=="gpio*",     ACTION=="add", PROGRAM="/bin/sh -c 'chown root:gpio /sys%p/active_low /sys%p/direction sys%p/edge /sys%p/value ; chmod 660 /sys%p/active_low /sys%p/direction /sys%p/edge /sys%p/value'"
+
+These rules can and should be installed using the following command sequence:
+
+sudo apt install upboard-extras
+sudo usermod -a -G gpio ${USER}
+sudo usermod -a -G leds ${USER}
+sudo usermod -a -G spi ${USER}
+sudo usermod -a -G i2c ${USER}
+sudo usermod -a -G dialout ${USER}
+
+Activate modules and access
+sudo reboot
