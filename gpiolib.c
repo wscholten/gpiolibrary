@@ -124,7 +124,8 @@
  	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", pin);
  	fd = open(path, O_WRONLY);
   if(DEBUG_ON){
-		printf("Path:  %s \n", path);
+		printf("Write Path:  %s ", path);
+    printf(" Value: %d \n", value);
 	}
 	usleep(500 * 1000);				// give process time to finsih and grab fd
  	if (-1 == fd) {
