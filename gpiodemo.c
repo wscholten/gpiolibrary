@@ -54,7 +54,9 @@ int main(int argc, char *argv[])
       }
       switch(gpioPinDirection[gpioIndex]) {
         case OUT:
-          GPIOWrite(gpioPins[gpioIndex], repeat % 2);
+//				GPIOWrite(gpioPins[gpioIndex], 1);
+				GPIOWrite(gpioPins[gpioIndex], repeat % 2);
+
         break;
 
         case IN:
@@ -70,10 +72,13 @@ int main(int argc, char *argv[])
   gpioIndex = GPIOPIN_ARRAY_LENGTH;
   do {
      // set direction of pins in OUT state to IN
-     if(gpioPinDirection[gpioIndex] == OUT) {
+     // THIS is commented out as it somehow interferes
+		 // with UDEV rules
+		 
+     //if(gpioPinDirection[gpioIndex] == OUT) {
        // set direction to in
-       GPIODirection( gpioPins[gpioIndex], IN);
-     }
+       //GPIODirection( gpioPins[gpioIndex], IN);
+     //}
      // Then UNEXPORT the GPIO gpioPins
      if( -1 == GPIOUnexport(gpioPins[gpioIndex]))
         return(1);
