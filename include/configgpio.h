@@ -6,11 +6,16 @@ extern "C"
 {
 #endif
 
+// For generic testing
+//int gpioPins[] = {BCM4, BCM22, BCM23, BCM24};
+//int gpioPinDirection[] = {IN, OUT, OUT, IN};
 
-int gpioPins[] = {BCM4, BCM22, BCM23, BCM24};
-int gpioPinDirection[] = {IN, OUT, OUT, IN};
+// Pin coonfig for the DimScan System
+int gpioPins[] = {BCM22, BCM26, BCM23, BCM24, BCM25, BCM27};
+int gpioPinDirection[] = {OUT, OUT, OUT, OUT, OUT, IN};
 
-#define GPIOPIN_ARRAY_LENGTH  3;   // 0 - 4 -- 4 positions
+// Below array index count must match arrays above defining pin's
+#define GPIOPIN_ARRAY_LENGTH  5;   // 0 - 4 -- 4 positions
 
 #ifdef __cplusplus
 }

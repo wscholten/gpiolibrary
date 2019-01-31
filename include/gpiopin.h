@@ -21,16 +21,16 @@ extern "C"
 
 
 #if(PLATFORM == 1)      // UPboard
-  #define BCM4 4        // header pin# 7
-  #define BCM27 27      // header pin# 13
-  #define BCM22 22      // header pin# 15
-  #define BCM5 5        // header pin# 29
-  #define BCM6 6        // header pin# 31
-  #define BCM26 26      // header pin# 37
-  #define BCM23 23      // header pin# 16
-  #define BCM24 24      // header pin# 18
-  #define BCM25 25      // header pin# 22
-  #define BCM16 16      // header pin# 36
+  #define BCM4 4        // header pin# 7    GPIO 2
+  #define BCM27 27      // header pin# 13   GPIO 4
+  #define BCM22 22      // header pin# 15   GPIO 5
+  #define BCM5 5        // header pin# 29   GPIO 10
+  #define BCM6 6        // header pin# 31   GPIO 11
+  #define BCM26 26      // header pin# 37   GPIO 14
+  #define BCM23 23      // header pin# 16   GPIO 18
+  #define BCM24 24      // header pin# 18   GPIO 19
+  #define BCM25 25      // header pin# 22   GPIO 20
+  #define BCM16 16      // header pin# 36   GPIO 25
 #endif
 
 #if(PLATFORM == 2)        // UP^2 Board

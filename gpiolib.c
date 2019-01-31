@@ -28,9 +28,21 @@
  #include <stdlib.h>
  #include <unistd.h>
  #include <stdbool.h>
+ #include <time.h>
+ #include <sys/ioctl.h>
+ #include <unistd.h>
+ #include <stdint.h>
+ #include <errno.h>
 
  #include "gpiolib.h"				// gpio library main header file and function setup
  #include "gpiopin.h"				// PIN library of available pins
+
+void sleepMillis(uint32_t millis){
+  struct timespec sleep;
+  sleep.tv_sec = millis / 1000;
+  sleep.tv_nsec = (millis % 1000) * 1000000L;
+  while(clock_nanosleep(CLOCK_MONOTONIC, 0 , &sleep, &sleep) && errno == EINTR);
+}
 
  int GPIOExport(int pin) {
    // setup the GPIO pins for use - the need to be ecxported first
@@ -51,7 +63,13 @@
  		 write(fd, buffer, bytes_written);
  		 close(fd);
  	}
-  usleep(1000);				// give process time to finsih and relinguish fd
+  // check if the binary got root p[ermissions and does the UDEV rules kicked in
+  if(geteuid()) {
+    fprintf(stderr, "No elevated privileges - sleep the thread\n");
+    sleepMillis(100);
+  }
+
+  //usleep(1000);				// give process time to finsih and relinguish fd
  	return(0);
  }
 
