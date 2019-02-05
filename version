@@ -1,0 +1,7 @@
+VERSION
+
+Version:  1.0.0
+Date:     Feb - 5 - 2019
+Author:   Willem Scholten
+
+Description:  Initial version for testing GPIO functionality on the UPboard using kernel 4.15.0-37-UPBOARD03

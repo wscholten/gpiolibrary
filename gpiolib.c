@@ -37,6 +37,9 @@
  #include "gpiolib.h"				// gpio library main header file and function setup
  #include "gpiopin.h"				// PIN library of available pins
 
+// the following function provides a safe way tyo sleep the thread
+// it is needed to ensure that the kernel can apply the UDEV rules when
+// setting pins up for export
 void sleepMillis(uint32_t millis){
   struct timespec sleep;
   sleep.tv_sec = millis / 1000;
@@ -45,7 +48,7 @@ void sleepMillis(uint32_t millis){
 }
 
  int GPIOExport(int pin) {
-   // setup the GPIO pins for use - the need to be ecxported first
+  // setup the GPIO pins for use - they need to be ecxported first
  	// to make them availabel for use.
  	char buffer[BUFFER_MAX];
  	ssize_t bytes_written;
@@ -63,13 +66,12 @@ void sleepMillis(uint32_t millis){
  		 write(fd, buffer, bytes_written);
  		 close(fd);
  	}
-  // check if the binary got root p[ermissions and does the UDEV rules kicked in
+  // check if the binary got root permissions and does the UDEV rules kicked in
   if(geteuid()) {
     fprintf(stderr, "No elevated privileges - sleep the thread\n");
     sleepMillis(100);
   }
 
-  //usleep(1000);				// give process time to finsih and relinguish fd
  	return(0);
  }
 
@@ -111,8 +113,8 @@ void sleepMillis(uint32_t millis){
  		fprintf(stderr, "Path: %s \n", path);
  	}
 	write(fd, &s_directions_str[IN == dir ? 0 : 3], IN == dir ? 2 : 3);
-  fsync(fd);
-	usleep(1000);
+  fsync(fd);            // forse the write to finish
+	usleep(1000);         // sleep the trhead to catchup
  	close(fd);
  	return(0);
  }
