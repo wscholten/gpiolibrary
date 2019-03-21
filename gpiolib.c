@@ -57,21 +57,24 @@ void sleepMillis(uint32_t millis){
  	if (fd != -1) {
  	   close(fd);
  	   fd = open("/sys/class/gpio/export", O_WRONLY);
- 		 usleep(1000);
- 		 if(fd == -1) {
- 			  fprintf(stderr, "Failed to open export for writing for pin: %d!\n", pin);
- 			 	return(-1);
- 		 }
+     if(DEBUG_LIB_ON) {
+ 		     usleep(1000);
+ 		     if(fd == -1) {
+ 			       fprintf(stderr, "Failed to open export for writing for pin: %d!\n", pin);
+ 			 	     return(-1);
+ 		     }
+     }
  		 bytes_written = snprintf(buffer, BUFFER_MAX, "%d", pin);
  		 write(fd, buffer, bytes_written);
  		 close(fd);
  	}
   // check if the binary got root permissions and does the UDEV rules kicked in
-  if(geteuid()) {
-    fprintf(stderr, "No elevated privileges - sleep the thread\n");
-    sleepMillis(100);
+  if(DEBUG_LIB_ON) {
+    if(geteuid()) {
+      fprintf(stderr, "No elevated privileges - sleep the thread\n");
+      sleepMillis(100);
+    }
   }
-
  	return(0);
  }
 
@@ -82,14 +85,16 @@ void sleepMillis(uint32_t millis){
  	ssize_t bytes_written;
  	int fd;
  	fd = open("/sys/class/gpio/unexport", O_WRONLY);
-	usleep(1000);
- 	if (-1 == fd) {
- 		fprintf(stderr, "Failed to open unexport for writing!\n");
- 		return(-1);
- 	}
+  if(DEBUG_LIB_ON){
+	  usleep(1000);
+ 	  if (-1 == fd) {
+ 		   fprintf(stderr, "Failed to open unexport for writing!\n");
+ 		   return(-1);
+ 	  }
+  }
  	bytes_written = snprintf(buffer, BUFFER_MAX, "%d", pin);
  	write(fd, buffer, bytes_written);
-	usleep(1000);		// give process time to finish and relinquish fd
+	//usleep(1000);		// give process time to finish and relinquish fd
 
  	close(fd);
  	return(0);
@@ -102,19 +107,19 @@ void sleepMillis(uint32_t millis){
 
  	char path[DIRECTION_MAX];
  	int fd;
-   if(DEBUG_ON) {
+   if(DEBUG_LIB_ON) {
  		fprintf(stderr, "Pin: %d", pin);
  		fprintf(stderr, " Direction: %d \n", dir);
  	}
  	snprintf(path, DIRECTION_MAX, "/sys/class/gpio/gpio%d/direction", pin);
  	fd = open(path, O_WRONLY);
- 	usleep(1000);
- 	if(DEBUG_ON){
+ 	if(DEBUG_LIB_ON){
+    usleep(1000);
  		fprintf(stderr, "Path: %s \n", path);
  	}
 	write(fd, &s_directions_str[IN == dir ? 0 : 3], IN == dir ? 2 : 3);
   fsync(fd);            // forse the write to finish
-	usleep(1000);         // sleep the trhead to catchup
+	//usleep(1000);         // sleep the trhead to catchup
  	close(fd);
  	return(0);
  }
@@ -126,13 +131,15 @@ void sleepMillis(uint32_t millis){
  	int fd;
  	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", pin);
  	fd = open(path, O_RDONLY);
- 	usleep(1000);				// give process time to finsih and grab fd
- 	if (-1 == read(fd, value_str, 3)) {
- 		fprintf(stderr, "Failed to read value!\n");
- 		return(-1);
- 	}
+  if(DEBUG_LIB_ON) {
+ 	  usleep(1000);				// give process time to finsih and grab fd
+ 	  if (-1 == read(fd, value_str, 3)) {
+ 		  fprintf(stderr, "Failed to read value!\n");
+ 		  return(-1);
+ 	  }
+  }
  	close(fd);
- 	usleep(1000);				// give process time to finsih and relinguish fd
+ 	//usleep(1000);				// give process time to finsih and relinguish fd
  	return(atoi(value_str));
  }
 
@@ -143,20 +150,22 @@ void sleepMillis(uint32_t millis){
  	int fd;
  	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", pin);
  	fd = open(path, O_WRONLY);
-  if(DEBUG_ON){
+  if(DEBUG_LIB_ON){
 		printf("Write Path:  %s ", path);
     printf(" Value: %d \n", value);
 	}
-	usleep(500 * 1000);				// give process time to finsih and grab fd
- 	if (-1 == fd) {
- 		fprintf(stderr, "Failed to open gpio value for writing!\n");
- 		return(-1);
- 	}
+  if(DEBUG_LIB_ON){
+	  usleep(500 * 1000);				// give process time to finsih and grab fd
+ 	  if (-1 == fd) {
+ 		  fprintf(stderr, "Failed to open gpio value for writing!\n");
+ 		  return(-1);
+ 	  }
+  }
 	write(fd, &s_values_str[LOW == value ? 0 : 1], 1);
 	fsync(fd);
-  usleep(1000);				// give process time to finsih and grab fd
+  //usleep(1000);				// give process time to finsih and grab fd
 
  	close(fd);
- 	usleep(1000);
+ 	//usleep(1000);
  	return(0);
  }

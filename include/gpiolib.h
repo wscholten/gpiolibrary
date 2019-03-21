@@ -18,6 +18,7 @@ extern "C"
 #define VALUE_MAX 31			// pin 3digit + NULL
 
 #define DEBUG_ON true
+#define DEBUG_LIB_ON false    // library code debug ccoode on/off
 
 // EXPORT pin function
 int GPIOExport(int pin);

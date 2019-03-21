@@ -63,7 +63,10 @@ int main(int argc, char *argv[])
           GPIORead(gpioPins[gpioIndex]);
         break;
       }
+			usleep(10000);		// Without usleep of 10000 led's flash so fast
+												// it is not able to be observed....
     } while(gpioIndex--);
+		  usleep(10000);
   } while(repeat--);
 
 	// Disable GPIO pins -- pins should be unset but for saftey purposes all
@@ -74,7 +77,7 @@ int main(int argc, char *argv[])
      // set direction of pins in OUT state to IN
      // THIS is commented out as it somehow interferes
 		 // with UDEV rules
-		 
+
      //if(gpioPinDirection[gpioIndex] == OUT) {
        // set direction to in
        //GPIODirection( gpioPins[gpioIndex], IN);
