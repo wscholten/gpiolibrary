@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 			usleep(10000);		// Without usleep of 10000 led's flash so fast
 												// it is not able to be observed....
     } while(gpioIndex--);
-		  usleep(10000);
+		  usleep(10);
   } while(repeat--);
 
 	// Disable GPIO pins -- pins should be unset but for saftey purposes all
@@ -80,13 +80,13 @@ int main(int argc, char *argv[])
 
      //if(gpioPinDirection[gpioIndex] == OUT) {
        // set direction to in
-       //GPIODirection( gpioPins[gpioIndex], IN);
+      // GPIODirection( gpioPins[gpioIndex], IN);
      //}
      // Then UNEXPORT the GPIO gpioPins
      if( -1 == GPIOUnexport(gpioPins[gpioIndex]))
-        return(1);
+         return(1);
      if(DEBUG_ON) {
-       printf("UN Setting GPIO: %d \n", gpioPins[gpioIndex]);
+        printf("UN Setting GPIO: %d \n", gpioPins[gpioIndex]);
      }
   } while(gpioIndex--);
 
