@@ -13,9 +13,12 @@
 // ---------------------------- test program -------------
 int main(int argc, char *argv[])
 {
-	int repeat = 5;         // for testing of read / write functions
+  int repeat = 5;         // for testing of read / write functions
 
   int gpioIndex = GPIOPIN_ARRAY_LENGTH;
+
+  printf("Starting GPIODEMO code ...... \n");
+  printf("Number of pins: %d ...... \n", gpioIndex);
 
   // Exporting the PINS for use
   do {
@@ -27,7 +30,7 @@ int main(int argc, char *argv[])
     }
   } while(gpioIndex--);
 
-	// Set the direction of the gpioPins
+  // Set the direction of the gpioPins
   // Uses two arrays configured in configgpio.h -- make sure that the
   // direction in the gpioPinDirection[] position matches that of the pin you
   // want to set in the gpioPins[] array
@@ -54,8 +57,8 @@ int main(int argc, char *argv[])
       }
       switch(gpioPinDirection[gpioIndex]) {
         case OUT:
-//				GPIOWrite(gpioPins[gpioIndex], 1);
-				GPIOWrite(gpioPins[gpioIndex], repeat % 2);
+//	   GPIOWrite(gpioPins[gpioIndex], 1);
+	   GPIOWrite(gpioPins[gpioIndex], repeat % 2);
 
         break;
 
@@ -63,32 +66,31 @@ int main(int argc, char *argv[])
           GPIORead(gpioPins[gpioIndex]);
         break;
       }
-			usleep(10000);		// Without usleep of 10000 led's flash so fast
+      usleep(10000);		// Without usleep of 10000 led's flash so fast
 												// it is not able to be observed....
     } while(gpioIndex--);
-		  usleep(10);
+    usleep(10);
   } while(repeat--);
 
-	// Disable GPIO pins -- pins should be unset but for saftey purposes all
+  // Disable GPIO pins -- pins should be unset but for saftey purposes all
   // pins which were set at output pins should be set to read so there is
   // mo lingering voltage left
   gpioIndex = GPIOPIN_ARRAY_LENGTH;
   do {
      // set direction of pins in OUT state to IN
      // THIS is commented out as it somehow interferes
-		 // with UDEV rules
+     // with UDEV rules
 
      //if(gpioPinDirection[gpioIndex] == OUT) {
-       // set direction to in
-      // GPIODirection( gpioPins[gpioIndex], IN);
+     // set direction to in
+     // GPIODirection( gpioPins[gpioIndex], IN);
      //}
      // Then UNEXPORT the GPIO gpioPins
      if( -1 == GPIOUnexport(gpioPins[gpioIndex]))
          return(1);
-     if(DEBUG_ON) {
-        printf("UN Setting GPIO: %d \n", gpioPins[gpioIndex]);
-     }
+         if(DEBUG_ON) {
+           printf("UN Setting GPIO: %d \n", gpioPins[gpioIndex]);
+         }
   } while(gpioIndex--);
-
-	return(0);
+  return(0);
 }

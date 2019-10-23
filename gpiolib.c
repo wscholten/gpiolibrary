@@ -88,17 +88,17 @@ void sleepMillis(uint32_t millis){
  	ssize_t bytes_written;
  	int fd;
  	fd = open("/sys/class/gpio/unexport", O_WRONLY);
-  usleep(10);
+        usleep(10);
  	if (-1 == fd) {
-    if(DEBUG_LIB_ON){
+           if(DEBUG_LIB_ON){
  		   fprintf(stderr, "Failed to open unexport for writing!\n");
-    }
- 		return(-1);
-  }
+           }
+ 	   return(-1);
+        }
  	bytes_written = snprintf(buffer, BUFFER_MAX, "%d", pin);
  	write(fd, buffer, bytes_written);
 	//usleep(1000);		// give process time to finish and relinquish fd
-  usleep(10);
+        usleep(10);
  	close(fd);
  	return(0);
  }
@@ -110,18 +110,18 @@ void sleepMillis(uint32_t millis){
 
  	char path[DIRECTION_MAX];
  	int fd;
-  if(DEBUG_LIB_ON) {
+        if(DEBUG_LIB_ON) {
  		fprintf(stderr, "Pin: %d", pin);
  		fprintf(stderr, " Direction: %d \n", dir);
  	}
  	snprintf(path, DIRECTION_MAX, "/sys/class/gpio/gpio%d/direction", pin);
  	fd = open(path, O_WRONLY);
  	if(DEBUG_ON){
-    usleep(100);
+        usleep(100);
  		fprintf(stderr, "Path: %s \n", path);
  	}
 	write(fd, &s_directions_str[IN == dir ? 0 : 3], IN == dir ? 2 : 3);
-  fsync(fd);            // forse the write to finish
+        fsync(fd);            // forse the write to finish
 	usleep(10);          // sleep the trhead to catchup
  	close(fd);
  	return(0);
@@ -134,40 +134,40 @@ void sleepMillis(uint32_t millis){
  	int fd;
  	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", pin);
  	fd = open(path, O_RDONLY);
-  usleep(10);
+        usleep(10);
  	  //usleep(100);				// give process time to finsih and grab fd
  	if (-1 == read(fd, value_str, 3)) {
-    if(DEBUG_LIB_ON) {
+           if(DEBUG_LIB_ON) {
  		  fprintf(stderr, "Failed to read value!\n");
-    }
- 		return(-1);
-  }
+           }
+ 	   return(-1);
+        }
  	close(fd);
  	usleep(10);				// give process time to finsih and relinguish fd
  	return(atoi(value_str));
  }
 
  int GPIOWrite(int pin, int value){
-   // Function to wreite to the GPIO pin
+        // Function to wreite to the GPIO pin
  	static const char s_values_str[] = "01";
  	char path[VALUE_MAX];
  	int fd;
  	snprintf(path, VALUE_MAX, "/sys/class/gpio/gpio%d/value", pin);
  	fd = open(path, O_WRONLY);
-  if(DEBUG_ON){
-		printf("Write Path:  %s ", path);
-    printf(" Value: %d \n", value);
+        if(DEBUG_ON){
+	    printf("Write Path:  %s ", path);
+            printf(" Value: %d \n", value);
 	}
-  usleep(10);
+        usleep(10);
  	if (-1 == fd) {
-    //if(DEBUG_LIB_ON) {
+           //if(DEBUG_LIB_ON) {
   		 fprintf(stderr, "Failed to open gpio value for writing!\n");
-    //}
+           //}
  	  return(-1);
-  }
+        }
 	write(fd, &s_values_str[LOW == value ? 0 : 1], 1);
 	fsync(fd);
-  usleep(10);				// give process time to finsih and grab fd
+        usleep(10);				// give process time to finsih and grab fd
 
  	close(fd);
  	//usleep(1000);
